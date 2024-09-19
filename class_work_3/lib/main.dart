@@ -154,6 +154,12 @@ class _DigitalPetAppState extends State<DigitalPetApp>
       return "😢 Unhappy";
     }
   }
+
+  void _setPetName() {
+    setState(() {
+      petName = nameController.text.isNotEmpty ? nameController.text : "Your Pet";
+    });
+  }
   
   @override
   Widget build(BuildContext context)
