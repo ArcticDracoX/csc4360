@@ -171,6 +171,15 @@ class _DigitalPetAppState extends State<DigitalPetApp>
         (
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            TextField(
+              controller: nameController,
+              decoration: InputDecoration(
+                labelText: "Enter Pet Name",
+              ),
+            ),
+
+            SizedBox(height: 16.0),
+
             Text
             (
               'Name: $petName',
