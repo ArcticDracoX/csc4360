@@ -160,7 +160,7 @@ class _DigitalPetAppState extends State<DigitalPetApp>
       petName = nameController.text.isNotEmpty ? nameController.text : "Your Pet";
     });
   }
-  
+
   @override
   Widget build(BuildContext context)
   {
@@ -177,11 +177,18 @@ class _DigitalPetAppState extends State<DigitalPetApp>
         (
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            TextField(
+            TextField
+            (
               controller: nameController,
               decoration: InputDecoration(
                 labelText: "Enter Pet Name",
               ),
+            ),
+
+            ElevatedButton
+            (
+              onPressed: _setPetName,
+              child: Text("Set Pet Name"),
             ),
 
             SizedBox(height: 16.0),
