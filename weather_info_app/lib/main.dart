@@ -61,6 +61,37 @@ class _MyHomePageState extends State<MyHomePage>
     });
   }
 
+  List<String> citytemp = ["", "", "", "", "", "", ""];
+  List<String> cityweather = ["", "", "", "", "", "", ""];
+
+  void get7DayWeather(String name)
+  {
+    city = name;
+    int j = 0;
+    while(j < 7)
+    {
+      int i = Random().nextInt(3);
+
+      setState(()
+      {
+        citytemp[j] = ((Random().nextDouble() * 15) + 15).toStringAsFixed(2);
+        if(i == 0)
+        {
+          cityweather[j] = "Sunny";
+        }
+          if(i == 1)
+        {
+          cityweather[j] = "Cloudy";
+        }
+          if(i == 2)
+        {
+          cityweather[j] = "Rain";
+        }
+      });
+      j++;
+    }
+  }
+
   @override
   void dispose()
   {
@@ -93,7 +124,22 @@ class _MyHomePageState extends State<MyHomePage>
             
             Text("City: $city"),
             Text("Temperature: $temp"),
-            Text("Weather: $weather")
+            Text("Weather: $weather"),
+
+            ElevatedButton
+            (
+              onPressed: () => get7DayWeather(myController.text),
+              child: const Text("Fetch Weather")
+            ),
+            
+            Text("City: $city"),
+            Text("Day 1 Temperature & Weather: ${citytemp[0].toString()}, ${cityweather[0].toString()}"),
+            Text("Day 2 Temperature & Weather: ${citytemp[1].toString()}, ${cityweather[1].toString()}"),
+            Text("Day 3 Temperature & Weather: ${citytemp[2].toString()}, ${cityweather[2].toString()}"),
+            Text("Day 4 Temperature & Weather: ${citytemp[3].toString()}, ${cityweather[3].toString()}"),
+            Text("Day 5 Temperature & Weather: ${citytemp[4].toString()}, ${cityweather[4].toString()}"),
+            Text("Day 6 Temperature & Weather: ${citytemp[5].toString()}, ${cityweather[5].toString()}"),
+            Text("Day 7 Temperature & Weather: ${citytemp[6].toString()}, ${cityweather[6].toString()}"),
           ],
         ),
       ),
