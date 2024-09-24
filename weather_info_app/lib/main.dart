@@ -36,26 +36,29 @@ class _MyHomePageState extends State<MyHomePage>
 {
   final myController = TextEditingController();
   String city = "";
-  double temp = 0.0;
+  String temp = "";
   String weather = "";
 
   void getWeather(String name)
   {
     city = name;
-    temp = (Random().nextDouble() * 15) + 15;
     int i = Random().nextInt(3);
-    if(i == 0)
-    {
-      weather = "Sunny";
-    }
-    if(i == 1)
-    {
-      weather = "Cloudy";
-    }
-    if(i == 2)
-    {
-      weather = "Rain";
-    }
+    
+    setState(() {
+      temp = ((Random().nextDouble() * 15) + 15).toStringAsFixed(2);
+      if(i == 0)
+      {
+        weather = "Sunny";
+      }
+        if(i == 1)
+      {
+        weather = "Cloudy";
+      }
+        if(i == 2)
+      {
+        weather = "Rain";
+      }
+    });
   }
 
   @override
@@ -82,11 +85,11 @@ class _MyHomePageState extends State<MyHomePage>
           children: <Widget>[
             TextField(controller: myController),
             
-            // ElevatedButton
-            // (
-            //   onPressed:
-            //   child: const Text("Fetch Weather")
-            // ),
+            ElevatedButton
+            (
+              onPressed: () => getWeather(myController.text),
+              child: const Text("Fetch Weather")
+            ),
             
             Text("City: $city"),
             Text("Temperature: $temp"),
