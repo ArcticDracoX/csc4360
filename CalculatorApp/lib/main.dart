@@ -35,17 +35,17 @@ class MyHomePage extends StatefulWidget
 class _MyHomePageState extends State<MyHomePage>
 {
   String current = "";
-  List<String> queue = [];
+  List<String> equation = [];
 
-  String printQueue()
+  String printEquation()
   {
     int i = 0;
     String output = "";
-    while(i < queue.length)
+    while(i < equation.length)
     {
       setState(()
       {
-        output = "$output ${queue[i]} ";
+        output = "$output ${equation[i]} ";
       });
       i++;
     }
@@ -60,26 +60,145 @@ class _MyHomePageState extends State<MyHomePage>
     });
   }
 
-  void addOperator(String operator)
+  void moveToEquation()
   {
     setState(()
     {
       if(current != "" && current != "-")
       {
-        queue.add(current);
+        equation.add(current);
         current = "";
-        queue.add(operator);
       }
     });
   }
 
-  // void solveEquation()
-  // {
-  //   setState(()
-  //   {
-  //     
-  //   });
-  // }
+  void addOperator(String operator)
+  {
+    setState(()
+    {
+      if(current != "-")
+      {
+        if(current != "")
+        {
+          if(equation.isEmpty)
+          {
+            moveToEquation();
+            equation.add(operator);
+          }
+          else
+          {
+            if(equation.last == "+" || equation.last == "-" || equation.last == "*" || equation.last == "/")
+            {
+              moveToEquation();
+              equation.add(operator);
+            }
+          }
+        }
+        else
+        {
+          if(!(equation.last == "+" || equation.last == "-" || equation.last == "*" || equation.last == "/"))
+          {
+            equation.add(operator);
+          }
+        }
+      }
+    });
+  }
+
+  void solveEquation()
+  {
+    int solver = 0;
+
+    // Only solve when there is more than one value
+    while(equation.length > 1)
+    {
+      // If an error is present, continue reinforcing that there is an error that must be cleared
+      if(equation.contains("Error"))
+      {
+        equation = ["Error"];
+      }
+      // If infinity is present, then the answer is infinity
+      if(equation.contains("Infinity"))
+      {
+        equation = ["Infinity"];
+      }
+
+      // If the function contains either multiplication or division,
+      if(equation.contains("*") || equation.contains("/"))
+      {
+        // And it contains both,
+        if(equation.contains("*") && equation.contains("/"))
+        {
+          // And multiplication is first, multiply.
+          if(equation.indexOf("*") < equation.indexOf("/"))
+          {
+            solver = (equation.indexOf("*") - 1).toInt() * (equation.indexOf("*") + 1).toInt();
+            equation.replaceRange(equation.indexOf("*") - 1, equation.indexOf("*") + 1, [solver.toString()]);
+          }
+          else
+          {
+            // If you try to divide by zero
+            if(equation[equation.indexOf("/") + 1] == "0")
+            {
+              // And you're trying to divide zero by zero, return an error.
+              if(equation[equation.indexOf("/") - 1] == "0")
+              {
+                equation = ["Error"];
+              }
+              // From any number other than zero, return infinity.
+              else
+              {
+                equation = ["Infinity"];
+              }
+            }
+            // And division is first, divide.
+            else
+            {
+              solver = (equation.indexOf("/") - 1).toInt() * (equation.indexOf("/") + 1).toInt();
+              equation.replaceRange(equation.indexOf("/") - 1, equation.indexOf("/") + 1, [solver.toString()]);
+            }
+          }
+        }
+
+        // And it only contains multiplication, multiply.
+        else if(equation.contains("*"))
+        {
+          solver = (equation.indexOf("*") - 1).toInt() * (equation.indexOf("*") + 1).toInt();
+          equation.replaceRange(equation.indexOf("*") - 1, equation.indexOf("*") + 1, [solver.toString()]);
+        }
+        
+        // And it only contains division, divide.
+        else
+        {
+            solver = (equation.indexOf("/") - 1).toInt() * (equation.indexOf("/") + 1).toInt();
+            equation.replaceRange(equation.indexOf("/") - 1, equation.indexOf("/") + 1, [solver.toString()]);
+        }
+      }
+
+      // If the function contains either addition or subtraction,
+      else if(equation.contains("+") || equation.contains("-"))
+      {
+        // And it contains both,
+        if(equation.contains("+") && equation.contains("-"))
+        {
+          if(equation.indexOf("-") < equation.indexOf("+"))
+          {
+            solver = (equation.indexOf("-") - 1).toInt() - (equation.indexOf("-") + 1).toInt();
+            equation.replaceRange(equation.indexOf("-") - 1, equation.indexOf("-") + 1, [solver.toString()]);
+          }
+        }
+      }
+      {
+        
+      }
+
+      
+    }
+    setState(()
+    {
+      equation = equation;
+    });
+  }
 
   @override
   Widget build(BuildContext context)
@@ -94,7 +213,7 @@ class _MyHomePageState extends State<MyHomePage>
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(
-              printQueue(),
+              printEquation(),
               style: Theme.of(context).textTheme.headlineMedium,
             ),
             Text(
@@ -102,6 +221,7 @@ class _MyHomePageState extends State<MyHomePage>
               style: Theme.of(context).textTheme.headlineMedium,
             ),
             Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 FilledButton(onPressed: ()
                 {
@@ -130,13 +250,13 @@ class _MyHomePageState extends State<MyHomePage>
             ),
 
             Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 FilledButton(onPressed: ()
                 {
                   editCurrent("4");
                 },
                 child: const Text("4")),
-
 
                 FilledButton(onPressed: ()
                 {
@@ -159,6 +279,7 @@ class _MyHomePageState extends State<MyHomePage>
             ),
 
             Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 FilledButton(onPressed: ()
                 {
@@ -187,6 +308,7 @@ class _MyHomePageState extends State<MyHomePage>
             ),
 
             Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 FilledButton(onPressed: ()
                 {
@@ -223,21 +345,12 @@ class _MyHomePageState extends State<MyHomePage>
                     }
                     else
                     {
-                      queue = [];
+                      equation = [];
                     }
                   });
                   
                 },
                 child: const Text("C")),
-
-                // FilledButton(onPressed: ()
-                // {
-                //   editCurrent(".");
-                // },
-                // child: const Text(".")),
-                
-
-                
 
                 FilledButton(onPressed: ()
                 {
@@ -249,11 +362,30 @@ class _MyHomePageState extends State<MyHomePage>
           ],
         ),
       ),
-      // floatingActionButton: FloatingActionButton(
-      // onPressed: solveEquation,
-      // tooltip: 'Equal',
-      // child: const Text("="),
-      // ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: ()
+        {
+          setState(()
+          {
+            if(equation.isEmpty)
+            {
+              moveToEquation();
+            }
+            if(equation.last == "+" || equation.last == "-" || equation.last == "*" || equation.last == "/")
+            {
+              moveToEquation();
+            }
+            // Fix solveEquation() from freezing the app before testing
+            // if((equation.length).isOdd)
+            // {
+            //   solveEquation();
+            // }
+          });
+          
+        },
+        tooltip: 'Solve Equation',
+        child: const Text("="),
+        ),
     );
   }
 }
