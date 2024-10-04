@@ -109,20 +109,36 @@ class _MyHomePageState extends State<MyHomePage>
   {
     int solver = 0;
 
-    // Only solve when there is more than one value
-    while(equation.length > 1)
+    // If you try to divide by zero
+    if(equation[equation.indexOf("/") + 1] == "0")
     {
-      // If an error is present, continue reinforcing that there is an error that must be cleared
-      if(equation.contains("Error"))
+      // And you're trying to divide zero by zero, return an error.
+      if(equation[equation.indexOf("/") - 1] == "0")
       {
         equation = ["Error"];
       }
-      // If infinity is present, then the answer is infinity
-      if(equation.contains("Infinity"))
+      // From any number other than zero, return infinity.
+      else
       {
         equation = ["Infinity"];
       }
+    }
 
+    // If an error is present, continue reinforcing that there is an error that must be cleared
+    if(equation.contains("Error"))
+    {
+      equation = ["Error"];
+    }
+
+    // If infinity is present, then the answer is infinity
+    if(equation.contains("Infinity"))
+    {
+      equation = ["Infinity"];
+    }
+
+    // Only solve when there is more than one value
+    while(equation.length > 1)
+    {
       // If the function contains either multiplication or division,
       if(equation.contains("*") || equation.contains("/"))
       {
@@ -132,47 +148,29 @@ class _MyHomePageState extends State<MyHomePage>
           // And multiplication is first, multiply.
           if(equation.indexOf("*") < equation.indexOf("/"))
           {
-            solver = (equation.indexOf("*") - 1).toInt() * (equation.indexOf("*") + 1).toInt();
-            equation.replaceRange(equation.indexOf("*") - 1, equation.indexOf("*") + 1, [solver.toString()]);
+            solver = (int.parse(equation[equation.indexOf("*") - 1]) * int.parse(equation[equation.indexOf("*") + 1]));
+            equation.replaceRange(equation.indexOf("*") - 1, equation.indexOf("*") + 2, [solver.toString()]);
           }
+          // And it only contains division, divide.
           else
           {
-            // If you try to divide by zero
-            if(equation[equation.indexOf("/") + 1] == "0")
-            {
-              // And you're trying to divide zero by zero, return an error.
-              if(equation[equation.indexOf("/") - 1] == "0")
-              {
-                equation = ["Error"];
-              }
-              // From any number other than zero, return infinity.
-              else
-              {
-                equation = ["Infinity"];
-              }
-            }
-            // And division is first, divide.
-            else
-            {
-              solver = (equation.indexOf("/") - 1).toInt() * (equation.indexOf("/") + 1).toInt();
-              equation.replaceRange(equation.indexOf("/") - 1, equation.indexOf("/") + 1, [solver.toString()]);
-            }
+            solver = int.parse(equation[equation.indexOf("/") - 1]) ~/ int.parse(equation[equation.indexOf("/") + 1]);
+            equation.replaceRange(equation.indexOf("/") - 1, equation.indexOf("/") + 2, [solver.toString()]);
           }
         }
 
         // And it only contains multiplication, multiply.
         else if(equation.contains("*"))
         {
-          solver = (equation.indexOf("*") - 1).toInt() * (equation.indexOf("*") + 1).toInt();
-          equation.replaceRange(equation.indexOf("*") - 1, equation.indexOf("*") + 1, [solver.toString()]);
+          solver = (int.parse(equation[equation.indexOf("*") - 1]) * int.parse(equation[equation.indexOf("*") + 1]));
+          equation.replaceRange(equation.indexOf("*") - 1, equation.indexOf("*") + 2, [solver.toString()]);
         }
-        
-        // And it only contains division, divide.
-        else
-        {
-            solver = (equation.indexOf("/") - 1).toInt() * (equation.indexOf("/") + 1).toInt();
-            equation.replaceRange(equation.indexOf("/") - 1, equation.indexOf("/") + 1, [solver.toString()]);
-        }
+        // And only contains division, divide.
+           else
+          {
+            solver = int.parse(equation[equation.indexOf("/") - 1]) ~/ int.parse(equation[equation.indexOf("/") + 1]);
+            equation.replaceRange(equation.indexOf("/") - 1, equation.indexOf("/") + 2, [solver.toString()]);
+          }
       }
 
       // If the function contains either addition or subtraction,
@@ -181,23 +179,35 @@ class _MyHomePageState extends State<MyHomePage>
         // And it contains both,
         if(equation.contains("+") && equation.contains("-"))
         {
-          if(equation.indexOf("-") < equation.indexOf("+"))
+          // And addition is first, add.
+          if(equation.indexOf("+") < equation.indexOf("-"))
           {
-            solver = (equation.indexOf("-") - 1).toInt() - (equation.indexOf("-") + 1).toInt();
-            equation.replaceRange(equation.indexOf("-") - 1, equation.indexOf("-") + 1, [solver.toString()]);
+            solver = (int.parse(equation[equation.indexOf("+") - 1]) + int.parse(equation[equation.indexOf("+") + 1]));
+            equation.replaceRange(equation.indexOf("+") - 1, equation.indexOf("+") + 2, [solver.toString()]);
+          }
+          // And subtraction is first, subtract.
+          else
+          {
+            solver = (int.parse(equation[equation.indexOf("-") - 1]) - int.parse(equation[equation.indexOf("-") + 1]));
+            equation.replaceRange(equation.indexOf("-") - 1, equation.indexOf("-") + 2, [solver.toString()]);
           }
         }
-      }
-      {
-        
-      }
 
-      
+        // And it only contains addition, add.
+        else if(equation.contains("+"))
+        {
+          solver = (int.parse(equation[equation.indexOf("+") - 1]) + int.parse(equation[equation.indexOf("+") + 1]));
+          equation.replaceRange(equation.indexOf("+") - 1, equation.indexOf("+") + 2, [solver.toString()]);
+        }
+        
+        // And it only contains subtraction, subtract.
+        else if(equation.contains("-"))
+        {
+          solver = (int.parse(equation[equation.indexOf("-") - 1]) - int.parse(equation[equation.indexOf("-") + 1]));
+          equation.replaceRange(equation.indexOf("-") - 1, equation.indexOf("-") + 2, [solver.toString()]);
+        }
+      }
     }
-    setState(()
-    {
-      equation = equation;
-    });
   }
 
   @override
@@ -367,6 +377,7 @@ class _MyHomePageState extends State<MyHomePage>
         {
           setState(()
           {
+            // Moves the current editing value into the list
             if(equation.isEmpty)
             {
               moveToEquation();
@@ -375,13 +386,14 @@ class _MyHomePageState extends State<MyHomePage>
             {
               moveToEquation();
             }
-            // Fix solveEquation() from freezing the app before testing
-            // if((equation.length).isOdd)
-            // {
-            //   solveEquation();
-            // }
+            
+            // Only solves if there are an odd number of elements in the list
+            // Ensures that every operator has two operands
+            if((equation.length).isOdd)
+            {
+              solveEquation();
+            }
           });
-          
         },
         tooltip: 'Solve Equation',
         child: const Text("="),
