@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'flippable_card.dart';
+import 'game_logic.dart';
 
 void main()
 {
@@ -36,6 +37,15 @@ class _MyHomePageState extends State<MyHomePage>
 {
   List<FlippableCardController> controller =
   List.generate(6, (i) => FlippableCardController());
+  
+  static final List<Image> cardlist =
+  [
+    Image(image: AssetImage('assets/images/king_of_diamonds2.png')),
+    Image(image: AssetImage('assets/images/queen_of_hearts2.png')),
+    Image(image: AssetImage('assets/images/jack_of_clubs2.png')),
+    // Excluded ace of spades due to lack of space for cards on device
+    // Image(image: AssetImage('assets/images/ace_of_spades2.png')),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +76,7 @@ class _MyHomePageState extends State<MyHomePage>
                   GestureDetector(
                     onTap: ()
                     {
-                      controller[0].flipCard();
+                      GameLogic().revealCard(controller, 0, 0);
                     },
                       child: SizedBox(
                         height: 762/3,
@@ -74,15 +84,17 @@ class _MyHomePageState extends State<MyHomePage>
                         child: FlippableCard(
                         controller: controller[0],
                         front: Image(image: AssetImage('assets/images/card_back.png')),
-                        back: Image(image: AssetImage('assets/images/ace_of_spades2.png')),
+                        back: cardlist[0],
                       ),
                       ),
                     ),
+                  
+                  SizedBox(width: 15),
 
                   GestureDetector(
                     onTap: ()
                     {
-                      controller[1].flipCard();
+                      GameLogic().revealCard(controller, 1, 2);
                     },
                       child: SizedBox(
                         height: 762/3,
@@ -90,7 +102,7 @@ class _MyHomePageState extends State<MyHomePage>
                         child: FlippableCard(
                         controller: controller[1],
                         front: Image(image: AssetImage('assets/images/card_back.png')),
-                        back: Image(image: AssetImage('assets/images/ace_of_spades2.png')),
+                        back: cardlist[2],
                       ),
                     ),
                   ),
@@ -105,7 +117,7 @@ class _MyHomePageState extends State<MyHomePage>
                   GestureDetector(
                     onTap: ()
                     {
-                      controller[2].flipCard();
+                      GameLogic().revealCard(controller, 2, 1);
                     },
                       child: SizedBox(
                         height: 762/3,
@@ -113,15 +125,17 @@ class _MyHomePageState extends State<MyHomePage>
                         child: FlippableCard(
                         controller: controller[2],
                         front: Image(image: AssetImage('assets/images/card_back.png')),
-                        back: Image(image: AssetImage('assets/images/ace_of_spades2.png')),
+                        back: cardlist[1],
                       ),
                       ),
                     ),
 
+                  SizedBox(width: 15),
+
                   GestureDetector(
                     onTap: ()
                     {
-                      controller[3].flipCard();
+                      GameLogic().revealCard(controller, 3, 0);
                     },
                       child: SizedBox(
                         height: 762/3,
@@ -129,7 +143,7 @@ class _MyHomePageState extends State<MyHomePage>
                         child: FlippableCard(
                         controller: controller[3],
                         front: Image(image: AssetImage('assets/images/card_back.png')),
-                        back: Image(image: AssetImage('assets/images/ace_of_spades2.png')),
+                        back: cardlist[0],
                       ),
                     ),
                   ),
@@ -144,7 +158,7 @@ class _MyHomePageState extends State<MyHomePage>
                   GestureDetector(
                     onTap: ()
                     {
-                      controller[4].flipCard();
+                      GameLogic().revealCard(controller, 4, 1);
                     },
                       child: SizedBox(
                         height: 762/3,
@@ -152,15 +166,17 @@ class _MyHomePageState extends State<MyHomePage>
                         child: FlippableCard(
                         controller: controller[4],
                         front: Image(image: AssetImage('assets/images/card_back.png')),
-                        back: Image(image: AssetImage('assets/images/ace_of_spades2.png')),
+                        back: cardlist[1],
                       ),
                       ),
                     ),
 
+                  SizedBox(width: 15),
+
                   GestureDetector(
                     onTap: ()
                     {
-                      controller[5].flipCard();
+                      GameLogic().revealCard(controller, 5, 2);
                     },
                       child: SizedBox(
                         height: 762/3,
@@ -168,7 +184,7 @@ class _MyHomePageState extends State<MyHomePage>
                         child: FlippableCard(
                         controller: controller[5],
                         front: Image(image: AssetImage('assets/images/card_back.png')),
-                        back: Image(image: AssetImage('assets/images/ace_of_spades2.png')),
+                        back: cardlist[2],
                       ),
                     ),
                   ),

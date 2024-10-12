@@ -80,21 +80,25 @@ class FlippableCardState extends State<FlippableCard> with TickerProviderStateMi
     }
     else
     {
-    await controller.forward();
+      await controller.forward();
     }
   }
 
   @override
   Widget build(BuildContext context) => AnimatedBuilder(animation: controller, builder: (context, child)
   {
+    // Determines animation angle and axis
     final angle = -(controller.value * pi);
     final transform = Matrix4.identity()
     ..setEntry(3, 2, 0.001)
     ..rotateY(angle);
     
+    // Executes the animation
     return Transform(
       transform: transform,
       alignment: Alignment.center,
+      // If isFrontImage returns true, display the front of the card
+      // if isFrontImage returns false, display the back of the card
       child: isFrontImage(angle.abs())? widget.front : Transform(
         transform: Matrix4.identity()..rotateY(pi),
         alignment: Alignment.center,
@@ -103,7 +107,7 @@ class FlippableCardState extends State<FlippableCard> with TickerProviderStateMi
     );
   });
 
-  // Show back image when angle degree is 90 < angle < 270 
+  // Return false when angle degree is 90 < angle < 270 
   bool isFrontImage(double angle)
   {
     final degrees90 = pi/ 2;
