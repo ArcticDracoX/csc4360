@@ -13,12 +13,12 @@ class MyApp extends StatelessWidget
   Widget build(BuildContext context)
   {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      title: 'Card Matching Demo',
+      // theme: ThemeData(
+      //   colorScheme: ColorScheme.fromSeed(seedColor: Colors.brown),
+      //   useMaterial3: true,
+      // ),
+      home: const MyHomePage(title: 'Card Matching Home Page'),
     );
   }
 }
@@ -41,8 +41,8 @@ class _MyHomePageState extends State<MyHomePage>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
+        backgroundColor: Colors.brown.shade700,
+        title: Text(widget.title, style: TextStyle(color: Colors.white,)),
       ),
       body: Center(
         child: Container(
