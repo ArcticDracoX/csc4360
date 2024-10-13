@@ -35,18 +35,9 @@ class MyHomePage extends StatefulWidget
 
 class _MyHomePageState extends State<MyHomePage>
 {
-  List<FlippableCardController> controller =
-  List.generate(6, (i) => FlippableCardController());
+  List<FlippableCard> compare = List.empty();
+  int match = 0;
   
-  static final List<Image> cardlist =
-  [
-    Image(image: AssetImage('assets/images/king_of_diamonds2.png')),
-    Image(image: AssetImage('assets/images/queen_of_hearts2.png')),
-    Image(image: AssetImage('assets/images/jack_of_clubs2.png')),
-    // Excluded ace of spades due to lack of space for cards on device
-    // Image(image: AssetImage('assets/images/ace_of_spades2.png')),
-  ];
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -67,7 +58,6 @@ class _MyHomePageState extends State<MyHomePage>
                 style: TextStyle(color: Colors.white, fontSize: 24.0),
                 textAlign: TextAlign.center,
               ),
-
               // Row 1
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -76,34 +66,32 @@ class _MyHomePageState extends State<MyHomePage>
                   GestureDetector(
                     onTap: ()
                     {
-                      GameLogic().revealCard(controller, 0, 0);
+                      setState(()
+                      {
+                        GameLogic().revealCard(GameLogic().cardlist[0], compare, match);
+                      });
                     },
-                      child: SizedBox(
-                        height: 762/3,
-                        width: 500/3,
-                        child: FlippableCard(
-                        controller: controller[0],
-                        front: Image(image: AssetImage('assets/images/card_back.png')),
-                        back: cardlist[0],
-                      ),
-                      ),
+                    child: SizedBox(
+                      height: 762/3,
+                      width: 500/3,
+                      child: GameLogic().cardlist[0],
                     ),
+                  ),
                   
                   SizedBox(width: 15),
 
                   GestureDetector(
                     onTap: ()
                     {
-                      GameLogic().revealCard(controller, 1, 2);
+                      setState(()
+                      {
+                        GameLogic().revealCard(GameLogic().cardlist[4], compare, match);
+                      });
                     },
-                      child: SizedBox(
-                        height: 762/3,
-                        width: 500/3,
-                        child: FlippableCard(
-                        controller: controller[1],
-                        front: Image(image: AssetImage('assets/images/card_back.png')),
-                        back: cardlist[2],
-                      ),
+                    child: SizedBox(
+                      height: 762/3,
+                      width: 500/3,
+                      child: GameLogic().cardlist[4],
                     ),
                   ),
                 ],
@@ -117,34 +105,32 @@ class _MyHomePageState extends State<MyHomePage>
                   GestureDetector(
                     onTap: ()
                     {
-                      GameLogic().revealCard(controller, 2, 1);
+                      setState(()
+                      {
+                        GameLogic().revealCard(GameLogic().cardlist[2], compare, match);
+                      });
                     },
-                      child: SizedBox(
-                        height: 762/3,
-                        width: 500/3,
-                        child: FlippableCard(
-                        controller: controller[2],
-                        front: Image(image: AssetImage('assets/images/card_back.png')),
-                        back: cardlist[1],
-                      ),
-                      ),
+                    child: SizedBox(
+                      height: 762/3,
+                      width: 500/3,
+                      child: GameLogic().cardlist[2],
                     ),
+                  ),
 
                   SizedBox(width: 15),
 
                   GestureDetector(
                     onTap: ()
                     {
-                      GameLogic().revealCard(controller, 3, 0);
+                      setState(()
+                      {
+                        GameLogic().revealCard(GameLogic().cardlist[5], compare, match);
+                      }); 
                     },
-                      child: SizedBox(
-                        height: 762/3,
-                        width: 500/3,
-                        child: FlippableCard(
-                        controller: controller[3],
-                        front: Image(image: AssetImage('assets/images/card_back.png')),
-                        back: cardlist[0],
-                      ),
+                    child: SizedBox(
+                      height: 762/3,
+                      width: 500/3,
+                      child: GameLogic().cardlist[5],
                     ),
                   ),
                 ],
@@ -158,34 +144,32 @@ class _MyHomePageState extends State<MyHomePage>
                   GestureDetector(
                     onTap: ()
                     {
-                      GameLogic().revealCard(controller, 4, 1);
+                      setState(()
+                      {
+                        GameLogic().revealCard(GameLogic().cardlist[3], compare, match);
+                      });
                     },
-                      child: SizedBox(
-                        height: 762/3,
-                        width: 500/3,
-                        child: FlippableCard(
-                        controller: controller[4],
-                        front: Image(image: AssetImage('assets/images/card_back.png')),
-                        back: cardlist[1],
-                      ),
-                      ),
+                    child: SizedBox(
+                      height: 762/3,
+                      width: 500/3,
+                      child: GameLogic().cardlist[3],
                     ),
+                  ),
 
                   SizedBox(width: 15),
 
                   GestureDetector(
                     onTap: ()
                     {
-                      GameLogic().revealCard(controller, 5, 2);
+                      setState(()
+                      {
+                        GameLogic().revealCard(GameLogic().cardlist[1], compare, match);
+                      });
                     },
-                      child: SizedBox(
-                        height: 762/3,
-                        width: 500/3,
-                        child: FlippableCard(
-                        controller: controller[5],
-                        front: Image(image: AssetImage('assets/images/card_back.png')),
-                        back: cardlist[2],
-                      ),
+                    child: SizedBox(
+                      height: 762/3,
+                      width: 500/3,
+                      child: GameLogic().cardlist[1],
                     ),
                   ),
                 ],
