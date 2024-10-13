@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'flippable_card.dart';
 
@@ -90,6 +89,7 @@ class _MyHomePageState extends State<MyHomePage>
   List<FlippableCard> compare = List.empty();
   List<bool> flipped = [false, false, false, false, false, false];
   
+  // I have no idea why this hangs if it solves too quickly
   void revealCard(FlippableCard currentcard)
   {
     // Check if the current card has been flipped
@@ -113,21 +113,13 @@ class _MyHomePageState extends State<MyHomePage>
           // And the faces match
           if(compare[1].back == compare[0].back)
           {
-            // Forget the last card and increment match
+            // Wipe the comparisons in memory
            compare = List.empty();
-
-            // Commence victory if all matches are found
-            if(!flipped.contains(false))
-            {
-
-            }
           }
 
-          // And the faces don't match
+          // And the faces don't match, unflip cards
           else
           {
-            // Unflip both cards after two seconds
-            // sleep(Duration(seconds: 2));
             flipped[cardlist.indexOf(compare[0])] = false;
             flipped[cardlist.indexOf(compare[1])] = false;
             compare[0].controller.flipCard();
@@ -137,8 +129,15 @@ class _MyHomePageState extends State<MyHomePage>
         });
       }
     }
+
+    // Commence victory if all matches are found
+    if(!flipped.contains(false))
+    {
+        message = "You win!";
+    }
   }
 
+  String message = "Match the cards to win!"; 
 
   @override
   Widget build(BuildContext context) {
@@ -155,12 +154,12 @@ class _MyHomePageState extends State<MyHomePage>
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>
             [
-              const Text(
-                'Match the cards to win!',
+              Text(
+                message,
                 style: TextStyle(color: Colors.white, fontSize: 24.0),
                 textAlign: TextAlign.center,
               ),
-              
+
               // Row 1
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
