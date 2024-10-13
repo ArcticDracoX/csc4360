@@ -1,6 +1,6 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'flippable_card.dart';
-import 'game_logic.dart';
 
 void main()
 {
@@ -34,10 +34,112 @@ class MyHomePage extends StatefulWidget
 }
 
 class _MyHomePageState extends State<MyHomePage>
-{
+{ 
+  final List<FlippableCardController> controller =
+  List.generate(6, (i) => FlippableCardController(), growable: false);
+
+  final List<Image> cardface =
+  [
+    Image(image: AssetImage('assets/images/card_back.png')),
+    Image(image: AssetImage('assets/images/king_of_diamonds2.png')),
+    Image(image: AssetImage('assets/images/queen_of_hearts2.png')),
+    Image(image: AssetImage('assets/images/jack_of_clubs2.png')),
+    // Excluded ace of spades due to lack of space for cards on device
+    // Image(image: AssetImage('assets/images/ace_of_spades2.png')),
+  ];
+
+  late final List<FlippableCard> cardlist =
+  [
+    FlippableCard(
+      controller: controller[0],
+      front: cardface[0],
+      back: cardface[1],
+    ),
+
+    FlippableCard(
+      controller: controller[1],
+      front: cardface[0],
+      back: cardface[1],
+    ),
+
+    FlippableCard(
+      controller: controller[2],
+      front: cardface[0],
+      back: cardface[2],
+    ),
+
+    FlippableCard(
+      controller: controller[3],
+      front: cardface[0],
+      back: cardface[2],
+    ),
+
+    FlippableCard(
+      controller: controller[4],
+      front: cardface[0],
+      back: cardface[3],
+    ),
+
+    FlippableCard(
+      controller: controller[5],
+      front: cardface[0],
+      back: cardface[3],
+    ),
+  ];
+
   List<FlippableCard> compare = List.empty();
-  int match = 0;
+  List<bool> flipped = [false, false, false, false, false, false];
   
+  void revealCard(FlippableCard currentcard)
+  {
+    // Check if the current card has been flipped
+    if(!flipped[cardlist.indexOf(currentcard)])
+    {
+      // If there was not a card flipped before the current card, register it as the last card flipped
+      if(compare.isEmpty)
+      {
+        compare = [currentcard];
+        flipped[cardlist.indexOf(currentcard)] = true;
+        compare[0].controller.flipCard();
+      }
+
+      // If the current card is not the same as the previous card, flip the current card.
+      else if(currentcard != compare[0])
+      {
+        compare = [compare[0], currentcard];
+        flipped[cardlist.indexOf(currentcard)] = true;
+        compare[1].controller.flipCard().whenComplete(()
+        {
+          // And the faces match
+          if(compare[1].back == compare[0].back)
+          {
+            // Forget the last card and increment match
+           compare = List.empty();
+
+            // Commence victory if all matches are found
+            if(!flipped.contains(false))
+            {
+
+            }
+          }
+
+          // And the faces don't match
+          else
+          {
+            // Unflip both cards after two seconds
+            // sleep(Duration(seconds: 2));
+            flipped[cardlist.indexOf(compare[0])] = false;
+            flipped[cardlist.indexOf(compare[1])] = false;
+            compare[0].controller.flipCard();
+            compare[1].controller.flipCard();
+            compare = List.empty();
+          }
+        });
+      }
+    }
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,6 +160,7 @@ class _MyHomePageState extends State<MyHomePage>
                 style: TextStyle(color: Colors.white, fontSize: 24.0),
                 textAlign: TextAlign.center,
               ),
+              
               // Row 1
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -68,13 +171,13 @@ class _MyHomePageState extends State<MyHomePage>
                     {
                       setState(()
                       {
-                        GameLogic().revealCard(GameLogic().cardlist[0], compare, match);
+                        revealCard(cardlist[0]);
                       });
                     },
                     child: SizedBox(
                       height: 762/3,
                       width: 500/3,
-                      child: GameLogic().cardlist[0],
+                      child: cardlist[0],
                     ),
                   ),
                   
@@ -85,13 +188,13 @@ class _MyHomePageState extends State<MyHomePage>
                     {
                       setState(()
                       {
-                        GameLogic().revealCard(GameLogic().cardlist[4], compare, match);
+                        revealCard(cardlist[4]);
                       });
                     },
                     child: SizedBox(
                       height: 762/3,
                       width: 500/3,
-                      child: GameLogic().cardlist[4],
+                      child: cardlist[4],
                     ),
                   ),
                 ],
@@ -107,13 +210,13 @@ class _MyHomePageState extends State<MyHomePage>
                     {
                       setState(()
                       {
-                        GameLogic().revealCard(GameLogic().cardlist[2], compare, match);
+                        revealCard(cardlist[2]);
                       });
                     },
                     child: SizedBox(
                       height: 762/3,
                       width: 500/3,
-                      child: GameLogic().cardlist[2],
+                      child: cardlist[2],
                     ),
                   ),
 
@@ -124,13 +227,13 @@ class _MyHomePageState extends State<MyHomePage>
                     {
                       setState(()
                       {
-                        GameLogic().revealCard(GameLogic().cardlist[5], compare, match);
+                        revealCard(cardlist[5]);
                       }); 
                     },
                     child: SizedBox(
                       height: 762/3,
                       width: 500/3,
-                      child: GameLogic().cardlist[5],
+                      child: cardlist[5],
                     ),
                   ),
                 ],
@@ -146,13 +249,13 @@ class _MyHomePageState extends State<MyHomePage>
                     {
                       setState(()
                       {
-                        GameLogic().revealCard(GameLogic().cardlist[3], compare, match);
+                        revealCard(cardlist[3]);
                       });
                     },
                     child: SizedBox(
                       height: 762/3,
                       width: 500/3,
-                      child: GameLogic().cardlist[3],
+                      child: cardlist[3],
                     ),
                   ),
 
@@ -163,13 +266,13 @@ class _MyHomePageState extends State<MyHomePage>
                     {
                       setState(()
                       {
-                        GameLogic().revealCard(GameLogic().cardlist[1], compare, match);
+                        revealCard(cardlist[1]);
                       });
                     },
                     child: SizedBox(
                       height: 762/3,
                       width: 500/3,
-                      child: GameLogic().cardlist[1],
+                      child: cardlist[1],
                     ),
                   ),
                 ],
