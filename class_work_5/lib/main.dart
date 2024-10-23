@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'fish.dart';
 
 void main()
 {
@@ -35,14 +36,16 @@ class MyHomePage extends StatefulWidget
 
 class _MyHomePageState extends State<MyHomePage>
 {
-  int _counter = 0;
-
-  void _incrementCounter()
+  List<Fish> fishList = [];
+  void _addFish()
   {
-    setState(()
-    {
-      _counter++;
-    });
+    if (fishList.length < 10)
+    { // Limiting to 10 fish
+      setState(()
+      {
+        fishList.add(Fish(colour: selectedColor, speed: selectedSpeed));
+      });
+    }
   }
 
   @override
