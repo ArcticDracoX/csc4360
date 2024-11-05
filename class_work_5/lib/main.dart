@@ -48,6 +48,17 @@ class _MyHomePageState extends State<MyHomePage>
     }
   }
 
+  void _removeLastFish()
+  {
+    if(fishList.isNotEmpty)
+    {
+      setState(()
+      {
+        fishList.removeLast();
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context)
   {
