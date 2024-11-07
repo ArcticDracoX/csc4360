@@ -4,7 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'firebase_options.dart';
 
-
+// Initialises Firebase and calls MyApp()
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
@@ -14,6 +14,7 @@ void main() async {
   runApp(MyApp());
 }
 
+// Setup for app structure
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -24,6 +25,8 @@ class MyApp extends StatelessWidget {
   }
 }
 
+// Main splash screen for app
+// Shows title parameter
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key? key, required this.title}) : super(key: key);
   final String title;
@@ -32,6 +35,8 @@ class MyHomePage extends StatefulWidget {
   _MyHomePageState createState() => _MyHomePageState();
 }
 
+// Main logic for signing out
+// Builds UI
 class _MyHomePageState extends State<MyHomePage> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
@@ -69,6 +74,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
+// Email registration and email login
 class RegisterEmailSection extends StatefulWidget {
   RegisterEmailSection({Key? key, required this.auth}) : super(key: key);
   final FirebaseAuth auth;
@@ -77,6 +83,8 @@ class RegisterEmailSection extends StatefulWidget {
   _RegisterEmailSectionState createState() => _RegisterEmailSectionState();
 }
 
+// Controls registration form
+// Validates inputs
 class _RegisterEmailSectionState extends State<RegisterEmailSection> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
@@ -115,6 +123,7 @@ class _RegisterEmailSectionState extends State<RegisterEmailSection> {
             controller: _emailController,
             decoration: InputDecoration(labelText: 'Email'),
             validator: (value) {
+              // Null check
               if (value?.isEmpty??true) {
                 return 'Please enter some text';
               }
@@ -160,6 +169,8 @@ class _RegisterEmailSectionState extends State<RegisterEmailSection> {
   }
 }
 
+// Build class for user login and email
+// Skeleton from above
 class EmailPasswordForm extends StatefulWidget {
   EmailPasswordForm({Key? key, required this.auth}) : super(key: key);
   final FirebaseAuth auth;
