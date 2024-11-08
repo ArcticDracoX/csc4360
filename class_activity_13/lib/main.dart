@@ -1,3 +1,5 @@
+// import 'package:class_activity_13/widgets/login_email.dart';
+// import 'package:class_activity_13/widgets/register_email.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -76,11 +78,11 @@ class _MyHomePageState extends State<MyHomePage> {
 
 // Email registration and email login
 class RegisterEmailSection extends StatefulWidget {
-  RegisterEmailSection({Key? key, required this.auth}) : super(key: key);
+  const RegisterEmailSection({super.key, required this.auth});
   final FirebaseAuth auth;
 
   @override
-  _RegisterEmailSectionState createState() => _RegisterEmailSectionState();
+  State<RegisterEmailSection> createState() => _RegisterEmailSectionState();
 }
 
 // Controls registration form
@@ -124,19 +126,36 @@ class _RegisterEmailSectionState extends State<RegisterEmailSection> {
             decoration: InputDecoration(labelText: 'Email'),
             validator: (value) {
               // Null check
-              if (value?.isEmpty??true) {
-                return 'Please enter some text';
+              if (value?.isEmpty??true)
+              {
+                return 'Please enter an email.';
               }
-              return null;
+
+              if(value!.startsWith('@') == false &&
+                 value.contains('@') == true &&
+                 value.substring(value.indexOf('@'), value.length - 1).contains('.')
+                )
+              {
+                return null;
+              }
+              
+              return 'Please enter a valid email.';
             },
           ),
           TextFormField(
             controller: _passwordController,
             decoration: InputDecoration(labelText: 'Password'),
             validator: (value) {
-              if(value?.isEmpty??true) {
-                return 'Please enter some text';
+              if(value?.isEmpty??true)
+              {
+                return 'Please enter a password.';
               }
+
+              if(value!.length < 6)
+              {
+                return 'Password has to be at least six characters.';
+              }
+
               return null;
             },
           ),
@@ -172,11 +191,11 @@ class _RegisterEmailSectionState extends State<RegisterEmailSection> {
 // Build class for user login and email
 // Skeleton from above
 class EmailPasswordForm extends StatefulWidget {
-  EmailPasswordForm({Key? key, required this.auth}) : super(key: key);
+  const EmailPasswordForm({super.key, required this.auth});
   final FirebaseAuth auth;
 
   @override
-  _EmailPasswordFormState createState() => _EmailPasswordFormState();
+  State<EmailPasswordForm> createState() => _EmailPasswordFormState();
 }
 
 class _EmailPasswordFormState extends State<EmailPasswordForm> {
@@ -214,27 +233,45 @@ class _EmailPasswordFormState extends State<EmailPasswordForm> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Container(
-            child: Text('Test sign in with email and password'),
             padding: const EdgeInsets.all(16),
             alignment: Alignment.center,
+            child: Text('Test sign in with email and password'),
           ),
           TextFormField(
             controller: _emailController,
             decoration: InputDecoration(labelText: 'Email'),
             validator: (value) {
-              if (value?.isEmpty??true) {
-                return 'Please enter some text';
+              // Null check
+              if (value?.isEmpty??true)
+              {
+                return 'Please enter an email.';
               }
-              return null;
+
+              if(value!.startsWith('@') == false &&
+                 value.contains('@') == true &&
+                 value.substring(value.indexOf('@'), value.length - 1).contains('.')
+                )
+              {
+                return null;
+              }
+              
+              return 'Please enter a valid email.';
             },
           ),
           TextFormField(
             controller: _passwordController,
             decoration: InputDecoration(labelText: 'Password'),
             validator: (value) {
-              if (value?.isEmpty??true) {
-                return 'Please enter some text';
+              if(value?.isEmpty??true)
+              {
+                return 'Please enter a password.';
               }
+
+              if(value!.length < 6)
+              {
+                return 'Password has to be at least six characters.';
+              }
+
               return null;
             },
           ),
