@@ -55,9 +55,28 @@ class _MyHomePageState extends State<MyHomePage> {
       showDialog(
           context: context,
           builder: (BuildContext context) {
-            return AlertDialog(
-              title: Text("Notification"),
+            if(event.notification!.title!.contains("Urgent"))
+            {
+              return AlertDialog(
+                title: Text(event.notification!.title!),
+                content: Text(event.notification!.body!),
+                backgroundColor: Colors.red,
+                actions: [
+                  TextButton(
+                    child: Text("Ok"),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  )
+                ],
+              );
+            }
+            else
+            {
+              return AlertDialog(
+              title: Text(event.notification!.title!),
               content: Text(event.notification!.body!),
+              backgroundColor: Colors.green,
               actions: [
                 TextButton(
                   child: Text("Ok"),
@@ -67,6 +86,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 )
               ],
             );
+            }
           });
     });
     FirebaseMessaging.onMessageOpenedApp.listen((message) {
